@@ -1,0 +1,16 @@
+arch:
+  - amd64
+  - arm64
+
+services: docker
+
+script:
+  - cd src
+  - make all
+
+deploy:
+    provider: script
+    script: bash docker_push
+    on:
+        branch: master
+
