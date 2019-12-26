@@ -3,13 +3,12 @@ arch:
   - amd64
   - arm64
 services: docker
-sudo: required
 
 script:
   - export arch=$(dpkg --print-architecture)
   - if [[ $arch == arm* ]] ; then export arch=arm; fi
   - sudo service docker stop
-  - dockerd --experimental
+  - sudo dockerd --experimental &
   - docker run --rm --privileged multiarch/qemu-user-static:register
   - cd ${arch}/ && docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch}
   #- docker push sagu/mariadb-alpine:${arch}
