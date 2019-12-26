@@ -16,7 +16,7 @@ script:
   #- docker push sagu/mariadb-alpine:${arch}
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin && docker push sagu/mariadb-alpine:${arch}
 
-stage: manifest
+stage: deploy
 arch: amd64
 script:
   - mkdir /root/.docker
