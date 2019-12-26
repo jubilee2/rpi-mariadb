@@ -1,31 +1,27 @@
-stage: build
-matrix:
-  include:
-   - os: linux
-     arch: amd64
-     env:
-      - arch: amd64
-   - os: linux
-     arch: arm64
-     env:
-      - arch: arm
+os: linux
+arch: 
+  - amd64
+  - arm64
 services: docker
 
 script:
+  - export arch=$(dpkg --print-architecture)
+  - if [[ $arch == arm* ]] ; then export arch=arm; fi
   - docker run --rm --privileged multiarch/qemu-user-static:register
   - cd ${arch}/ && docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch}
   #- docker push sagu/mariadb-alpine:${arch}
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin && docker push sagu/mariadb-alpine:${arch}
 
-stage: deploy
-arch: amd64
-script:
-  - mkdir /root/.docker
-  - 'echo -e "{\n    \"experimental\": \"enabled\"\n}\n" >> ~/.docker/config.json'
-  - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-  - docker pull sagu/mariadb-alpine:amd64
-  - docker pull sagu/mariadb-alpine:arm
-  - docker manifest create sagu/mariadb-alpine:latest sagu/mariadb-alpine:amd64 sagu/mariadb-alpine:arm
-  - docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:amd64 --os linux --arch amd64
-  - docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:arm --os linux --arch arm
-  - docker manifest push sagu/mariadb-alpine:latest
+jobs:
+  include:
+    - stage: deploy
+      script:
+        - mkdir /root/.docker
+        - 'echo -e "{\n    \"experimental\": \"enabled\"\n}\n" >> ~/.docker/config.json'
+        - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+        - docker pull sagu/mariadb-alpine:amd64
+        - docker pull sagu/mariadb-alpine:arm
+        - docker manifest create sagu/mariadb-alpine:latest sagu/mariadb-alpine:amd64 sagu/mariadb-alpine:arm
+        - docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:amd64 --os linux --arch amd64
+        - docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:arm --os linux --arch arm
+        - docker manifest push sagu/mariadb-alpine:latest
