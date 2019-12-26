@@ -16,7 +16,7 @@ script:
   - kill %1
   - set +e
   - pkill -9 -P $$ &> /dev/null || true
-  - exit $1
+  - exit 0
 
 jobs:
   include:
