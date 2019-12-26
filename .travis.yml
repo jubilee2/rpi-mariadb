@@ -17,8 +17,7 @@ script:
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin && docker push sagu/mariadb-alpine:${arch}
 
 stage: manifest
-tags:
-  - amd64
+arch: amd64
 script:
   - mkdir /root/.docker
   - 'echo -e "{\n    \"experimental\": \"enabled\"\n}\n" >> ~/.docker/config.json'
