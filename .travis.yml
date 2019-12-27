@@ -19,22 +19,14 @@ script:
   - sudo service docker stop
   - sudo dockerd --experimental &
   - echo "$DOCKERHUB_PASSWORD" | sudo docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-  - sudo apt install -y -qq qemu qemu-user-static binfmt-support
-  - sudo update-binfmts --display
+  #- sudo apt install -y -qq qemu qemu-user-static binfmt-support
   - sudo docker run --rm --privileged docker/binfmt:66f9012c56a8316f9244ffd7622d7c21c1f6f28d
-  - sudo cat /proc/sys/fs/binfmt_misc/qemu-arm-static
   - sudo docker buildx create --name mybuilder
   - sudo docker buildx use mybuilder
   - sudo docker buildx inspect --bootstrap
-  - sudo docker buildx ls
   #- cd ${arch}/ && docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch}
   - if [[ $arch == amd* ]] ; then cd ${arch}/ && sudo docker buildx build --platform linux/amd64 -t sagu/mariadb-alpine:${arch} . --push; fi
   - if [[ $arch == arm* ]] ; then cd ${arch}/ && sudo docker buildx build --platform linux/arm/v7 -t sagu/mariadb-alpine:${arch} . --push; fi
-  #- docker push sagu/mariadb-alpine:${arch}
-  #- kill %1
-  #- set +e
-  #- pkill -9 -P $$ &> /dev/null || true
-  #- exit 0
 
 jobs:
   include:
