@@ -3,8 +3,8 @@ os: linux
 #  - amd64
 #  - arm64
 env:
-  - amd64
-  - arm
+  - arch: amd64
+  - arch: arm
 services: docker
 
 script:
