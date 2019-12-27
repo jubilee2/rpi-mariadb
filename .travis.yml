@@ -24,6 +24,7 @@ script:
   - sudo apt-get install qemu-user-static -y
   - sudo docker buildx create --name mybuilder
   - sudo docker buildx use mybuilder
+  - sudo docker buildx inspect --bootstrap
   - sudo docker buildx ls
   #- cd ${arch}/ && docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch}
   - if [[ $arch == amd* ]] ; then cd ${arch}/ && sudo docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch} ; fi
