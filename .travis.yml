@@ -24,6 +24,8 @@ script:
   - echo "$DOCKERHUB_PASSWORD" | sudo docker login -u "$DOCKERHUB_USERNAME" --password-stdin
   - sudo apt install -y -qq qemu qemu-user-static binfmt-support
   - sudo update-binfmts --display
+  - sudo docker run --rm --privileged docker/binfmt:66f9012c56a8316f9244ffd7622d7c21c1f6f28d
+  - sudo cat /proc/sys/fs/binfmt_misc/qemu-arm-static
   - sudo docker buildx create --name mybuilder
   - sudo docker buildx use mybuilder
   - sudo docker buildx inspect --bootstrap
