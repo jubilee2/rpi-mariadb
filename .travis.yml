@@ -1,7 +1,4 @@
 os: linux
-#arch:
-#  - amd64
-#  - arm64
 env:
   - arch: amd64
   - arch: arm
@@ -31,10 +28,9 @@ script:
   - sudo docker buildx inspect --bootstrap
   - sudo docker buildx ls
   #- cd ${arch}/ && docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch}
-  - if [[ $arch == amd* ]] ; then cd ${arch}/ && sudo docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch} ; fi
+  - if [[ $arch == amd* ]] ; then cd ${arch}/ && sudo docker buildx build --platform linux/amd64 -t sagu/mariadb-alpine:${arch} . --push; fi
   - if [[ $arch == arm* ]] ; then cd ${arch}/ && sudo docker buildx build --platform linux/arm/v7 -t sagu/mariadb-alpine:${arch} . --push; fi
   #- docker push sagu/mariadb-alpine:${arch}
-  - sudo docker push sagu/mariadb-alpine:${arch} && exit 0
   #- kill %1
   #- set +e
   #- pkill -9 -P $$ &> /dev/null || true
@@ -44,8 +40,7 @@ jobs:
   include:
     - stage: deploy
       script:
-        - wget https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64 -O ~/.docker/cli-plugins/docker-buildx
-        - chmod a+x ~/.docker/cli-plugins/docker-buildx
+        - export DOCKER_CLI_EXPERIMENTAL=enabled
         - sudo service docker stop
         - sudo dockerd --experimental &
         - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
