@@ -15,9 +15,9 @@ before_install:
 script:
   #- export arch=$(dpkg --print-architecture)
   #- if [[ $arch == arm* ]] ; then export arch=arm; fi
-  - sudo mkdir -p ~/.docker/cli-plugins
+  - mkdir -p ~/.docker/cli-plugins
   - wget -q https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64 -O ~/.docker/cli-plugins/docker-buildx
-  - sudo chmod a+x ~/.docker/cli-plugins/docker-buildx
+  - chmod a+x ~/.docker/cli-plugins/docker-buildx
   - sudo service docker stop
   - sudo dockerd --experimental &
   - sudo docker run --rm --privileged multiarch/qemu-user-static:register
