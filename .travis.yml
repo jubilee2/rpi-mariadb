@@ -21,9 +21,9 @@ script:
   - chmod a+x ~/.docker/cli-plugins/docker-buildx
   - sudo service docker stop
   - sudo dockerd --experimental &
-  - docker run --rm --privileged multiarch/qemu-user-static:register
-  - docker buildx create --name mybuilder
-  - docker buildx use mybuilder
+  - sudo docker run --rm --privileged multiarch/qemu-user-static:register
+  - sudo docker buildx create --name mybuilder
+  - sudo docker buildx use mybuilder
   #- cd ${arch}/ && docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch}
   - if [[ $arch == amd* ]] ; then cd ${arch}/ && docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch} ; fi
   - if [[ $arch == arm* ]] ; then cd ${arch}/ && docker buildx build --platform linux/arm/v7 -t sagu/mariadb-alpine:${arch} . ; fi
