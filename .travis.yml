@@ -21,7 +21,7 @@ script:
   - sudo service docker stop
   - sudo dockerd --experimental &
   - echo "$DOCKERHUB_PASSWORD" | sudo docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-  - sudo apt-get install qemu-user-static -y
+  - sudo apt-get install qemu qemu-user-static binfmt-support -y
   - sudo docker buildx create --name mybuilder
   - sudo docker buildx use mybuilder
   - sudo docker buildx inspect --bootstrap
