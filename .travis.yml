@@ -5,7 +5,6 @@ os: linux
 env:
   - arch: amd64
   - arch: arm
-services: docker
 
 before_install:
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -20,7 +19,7 @@ script:
   - wget -q https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64 -O ~/.docker/cli-plugins/docker-buildx
   - chmod a+x ~/.docker/cli-plugins/docker-buildx
   - sudo service docker stop
-  - sudo dockerd --experimental
+  - sudo dockerd --experimental &
   - sudo docker run --rm --privileged multiarch/qemu-user-static:register
   - sudo docker buildx create --name mybuilder
   - sudo docker buildx use mybuilder
