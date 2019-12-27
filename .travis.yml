@@ -20,15 +20,16 @@ script:
   - chmod a+x ~/.docker/cli-plugins/docker-buildx
   - sudo service docker stop
   - sudo dockerd --experimental &
-  - sudo docker run --rm --privileged multiarch/qemu-user-static:register
+  - echo "$DOCKERHUB_PASSWORD" | sudo docker login -u "$DOCKERHUB_USERNAME" --password-stdin
   - sudo apt-get install qemu-user-static -y
   - sudo docker buildx create --name mybuilder
   - sudo docker buildx use mybuilder
+  - sudo docker buildx ls
   #- cd ${arch}/ && docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch}
   - if [[ $arch == amd* ]] ; then cd ${arch}/ && sudo docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch} ; fi
-  - if [[ $arch == arm* ]] ; then cd ${arch}/ && sudo docker buildx build --platform linux/arm/v7 -t sagu/mariadb-alpine:${arch} . ; fi
+  - if [[ $arch == arm* ]] ; then cd ${arch}/ && sudo docker buildx build --platform linux/arm/v7 -t sagu/mariadb-alpine:${arch} . --push; fi
   #- docker push sagu/mariadb-alpine:${arch}
-  - echo "$DOCKERHUB_PASSWORD" | sudo docker login -u "$DOCKERHUB_USERNAME" --password-stdin && docker push sagu/mariadb-alpine:${arch}
+  - docker push sagu/mariadb-alpine:${arch} && exit 0
   #- kill %1
   #- set +e
   #- pkill -9 -P $$ &> /dev/null || true
