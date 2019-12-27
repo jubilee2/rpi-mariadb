@@ -5,13 +5,18 @@ os: linux
 env:
   - arch: amd64
   - arch: arm
-services: docker
+
+before_install:
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 
 script:
   #- export arch=$(dpkg --print-architecture)
   #- if [[ $arch == arm* ]] ; then export arch=arm; fi
   - mkdir -p ~/.docker/cli-plugins
-  - wget https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64 -O ~/.docker/cli-plugins/docker-buildx
+  - wget -q https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64 -O ~/.docker/cli-plugins/docker-buildx
   - chmod a+x ~/.docker/cli-plugins/docker-buildx
   - sudo service docker stop
   - sudo dockerd --experimental &
