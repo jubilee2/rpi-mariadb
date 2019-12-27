@@ -30,7 +30,7 @@ script:
   - if [[ $arch == amd* ]] ; then cd ${arch}/ && sudo docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch} ; fi
   - if [[ $arch == arm* ]] ; then cd ${arch}/ && sudo docker buildx build --platform linux/arm/v7 -t sagu/mariadb-alpine:${arch} . --push; fi
   #- docker push sagu/mariadb-alpine:${arch}
-  - docker push sagu/mariadb-alpine:${arch} && exit 0
+  - sudo docker push sagu/mariadb-alpine:${arch} && exit 0
   #- kill %1
   #- set +e
   #- pkill -9 -P $$ &> /dev/null || true
