@@ -34,8 +34,8 @@ MariaDB is developed as open source software and as a relational database it pro
 ## Tags
 
 * ```:latest``` latest branch based (Automatic Architecture Selection)
-* ```:amd64```, ```:x86_64```  amd64 based on latest tag but amd64 architecture
-* ```:armhf```, ```:arm32v7``` Armv7 based on latest tag but arm32 architecture
+* ```:amd64```  amd64 based on latest tag but amd64 architecture
+* ```:arm``` Armv7 based on latest tag but arm32 architecture (armhf)
 
 ## Layers & Sizes
 
@@ -44,8 +44,8 @@ MariaDB is developed as open source software and as a relational database it pro
 ![MicroBadger Size (tag)](https://img.shields.io/microbadger/image-size/sagu/mariadb-alpine/amd64.svg?style=for-the-badge)
 
 ![Version](https://img.shields.io/badge/version-armhf-blue.svg?style=for-the-badge)
-![MicroBadger Layers (tag)](https://img.shields.io/microbadger/layers/sagu/mariadb-alpine/armhf.svg?style=for-the-badge)
-![MicroBadger Size (tag)](https://img.shields.io/microbadger/image-size/sagu/mariadb-alpine/armhf.svg?style=for-the-badge)
+![MicroBadger Layers (tag)](https://img.shields.io/microbadger/layers/sagu/mariadb-alpine/arm.svg?style=for-the-badge)
+![MicroBadger Size (tag)](https://img.shields.io/microbadger/image-size/sagu/mariadb-alpine/arm.svg?style=for-the-badge)
 
 
 ## Volume structure
