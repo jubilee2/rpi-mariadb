@@ -40,6 +40,7 @@ jobs:
         - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
         - docker pull sagu/mariadb-alpine:amd64
         - docker pull sagu/mariadb-alpine:arm
+        - docker pull sagu/mariadb-alpine:i386
         - docker manifest create sagu/mariadb-alpine:latest sagu/mariadb-alpine:amd64 sagu/mariadb-alpine:arm
         - docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:amd64 --os linux --arch amd64
         - docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:arm --os linux --arch arm
