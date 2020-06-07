@@ -1,8 +1,6 @@
 FROM alpine:latest
 
-
-
-LABEL architecture="amd64/x86_64"
+LABEL architecture="i386"
 
 RUN apk add --no-cache mariadb mariadb-client mariadb-server-utils pwgen && \
     rm -f /var/cache/apk/*

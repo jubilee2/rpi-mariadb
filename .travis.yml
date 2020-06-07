@@ -2,6 +2,7 @@ os: linux
 env:
   - arch: amd64
   - arch: arm
+  - arch: i386
 
 before_install:
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -25,8 +26,9 @@ script:
   - sudo docker buildx use mybuilder
   - sudo docker buildx inspect --bootstrap
   #- cd ${arch}/ && docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch}
-  - if [[ $arch == amd* ]] ; then cd ${arch}/ && sudo docker buildx build --platform linux/amd64 -t sagu/mariadb-alpine:${arch} . --push; fi
-  - if [[ $arch == arm* ]] ; then cd ${arch}/ && sudo docker buildx build --platform linux/arm/v7 -t sagu/mariadb-alpine:${arch} . --push; fi
+  - if [[ $arch == amd* ]] ; sudo docker buildx build --platform linux/amd64 -t sagu/mariadb-alpine:${arch} . --push; fi
+  - if [[ $arch == arm* ]] ; sudo docker buildx build --platform linux/arm/v7 -t sagu/mariadb-alpine:${arch} . --push; fi
+  - if [[ $arch == i38* ]] ; sudo docker buildx build --platform linux/i386 -t sagu/mariadb-alpine:${arch} . --push; fi
 
 jobs:
   include:
@@ -41,4 +43,5 @@ jobs:
         - docker manifest create sagu/mariadb-alpine:latest sagu/mariadb-alpine:amd64 sagu/mariadb-alpine:arm
         - docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:amd64 --os linux --arch amd64
         - docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:arm --os linux --arch arm
+        - docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:i386 --os linux --arch i386
         - docker manifest push sagu/mariadb-alpine:latest
