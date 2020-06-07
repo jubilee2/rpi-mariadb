@@ -26,9 +26,9 @@ script:
   - sudo docker buildx use mybuilder
   - sudo docker buildx inspect --bootstrap
   #- cd ${arch}/ && docker build . --platform ${arch} -t sagu/mariadb-alpine:${arch}
-  - if [[ $arch == amd* ]] ; sudo docker buildx build --platform linux/amd64 -t sagu/mariadb-alpine:${arch} . --push; fi
-  - if [[ $arch == arm* ]] ; sudo docker buildx build --platform linux/arm/v7 -t sagu/mariadb-alpine:${arch} . --push; fi
-  - if [[ $arch == i38* ]] ; sudo docker buildx build --platform linux/386 -t sagu/mariadb-alpine:${arch} . --push; fi
+  - if [[ $arch == amd* ]] ; then sudo docker buildx build --platform linux/amd64 -t sagu/mariadb-alpine:${arch} . --push; fi
+  - if [[ $arch == arm* ]] ; then sudo docker buildx build --platform linux/arm/v7 -t sagu/mariadb-alpine:${arch} . --push; fi
+  - if [[ $arch == i38* ]] ; then sudo docker buildx build --platform linux/386 -t sagu/mariadb-alpine:${arch} . --push; fi
 
 jobs:
   include:
