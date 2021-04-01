@@ -1,0 +1,40 @@
+name: git
+
+on:
+  push:
+  schedule:
+    # 12:05 četrtek
+    - cron:  '5 12 * * 4'
+
+jobs:
+  git:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: crazy-max/ghaction-docker-buildx@v1
+      with:
+        version: latest
+    - name: Available platforms
+      run: echo ${{ steps.buildx.outputs.platforms }}
+    - name: Login
+      run: |
+        docker login -u sagu -p ${{ secrets.DH_PASSWORD }}
+    - name: Run Buildx arm
+      run: |
+        docker buildx build --platform linux/arm/v7 -t sagu/mariadb-alpine:arm . --push
+    - name: Run Buildx 386
+      run: |
+        docker buildx build --platform linux/386 -t sagu/mariadb-alpine:386 . --push
+    - name: Run Buildx amd64
+      run: |
+        docker buildx build --platform linux/amd64 -t sagu/mariadb-alpine:amd64 . --push
+    - name: Latest
+      run: |
+        docker manifest create sagu/mariadb-alpine:latest
+        docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:amd64 --os linux --arch amd64
+        docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:arm --os linux --arch arm
+        docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:386 --os linux --arch 386
+        docker manifest push sagu/mariadb-alpine:latest
