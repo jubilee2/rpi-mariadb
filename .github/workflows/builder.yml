@@ -21,7 +21,7 @@ jobs:
       run: echo ${{ steps.buildx.outputs.platforms }}
     - name: Login
       run: |
-        docker login -u sagu -p ${{ secrets.DH_PASSWORD }}
+        docker login -u sagu -p ${{ secrets.DH_PASS }}
     - name: Run Buildx arm
       run: |
         docker buildx build --platform linux/arm/v7 -t sagu/mariadb-alpine:arm . --push
