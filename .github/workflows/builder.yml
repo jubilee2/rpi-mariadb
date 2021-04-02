@@ -40,3 +40,7 @@ jobs:
         docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:arm --os linux --arch arm
         docker manifest annotate sagu/mariadb-alpine:latest sagu/mariadb-alpine:386 --os linux --arch 386
         docker manifest push sagu/mariadb-alpine:latest
+        echo ${{ secrets.GITHUB_TOKEN }} | docker login https://docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+        docker tag sagu/mariadb-alpine:latest docker.pkg.github.com/sagudev/alphine-mariadb/mariadb-alpine:latest
+        docker push docker.pkg.github.com/sagudev/alphine-mariadb/mariadb-alpine:latest
+        
