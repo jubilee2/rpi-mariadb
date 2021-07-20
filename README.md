@@ -2,7 +2,7 @@
 
 This Docker image [(sagu/mariadb-alpine)](https://hub.docker.com/r/sagu/mariadb-alpine/) is based on yobasystems/alpine-mariadb.
 
-##### Alpine Version: latest
+##### Alpine Version: 3.12
 ##### MariaDB Version: latest (in alpine pkgs)
 
 ----
